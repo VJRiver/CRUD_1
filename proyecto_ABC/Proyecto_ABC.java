@@ -1,6 +1,14 @@
-package CRUD_1.proyecto_ABC;
+// Este paquete es para la lap del gpo
+//package CRUD_1.proyecto_ABC;
 
-import CRUD_1.forms.*;
+// Este paquete es para la PC de casa
+package proyecto_ABC;
+
+// Este paquete es para la lap del gpo
+//import CRUD_1.forms.*;
+
+// Este paquete es para la PC de casa
+import forms.*;
 
 public class Proyecto_ABC {
 
