@@ -1,6 +1,6 @@
-package proyecto_ABC;
+package CRUD_1.proyecto_ABC;
 
-import forms.Frm_menu_principal;
+import CRUD_1.forms.*;
 
 public class Proyecto_ABC {
 
