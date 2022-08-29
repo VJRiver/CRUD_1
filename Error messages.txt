@@ -1,0 +1,14 @@
+27/08/22
+
+Se creó clase Metodos_SQL con la consulta preparada para actualizar la base de datos (para dar de alta usuarios) dentro de un método. 
+
+Se instancia esa clase dentro del actionPerformed del botón guardar del Pnl_Alta, se crean e inicializan variables con los valores de entrada del formulario, se pasan las variables como argumentos del método de la instancia creada. 
+
+Al ejecutar, llenar los campos y presionar boton guardar, nos aparece en eclipse:
+
+'Show console view' has encountered a problem
+An internal error has occurred
+
+
+An internal error has occurred.
+Cannot invoke "org.eclipse.ui.part.IPage.getControl()" because the return value of "org.eclipse.ui.part.PageBookView.getCurrentPage()" is null
