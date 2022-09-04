@@ -2,18 +2,14 @@ package forms;
 
 import javax.swing.JPanel;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import javax.swing.border.TitledBorder;
@@ -23,23 +19,44 @@ import sql.Metodos_SQL;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 import java.awt.Component;
 import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class Pnl_alta extends JPanel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     JButton btn_Random;
     private JTextField txt_password_alta;
+    private JTextArea txt_Nombre;
+    private JTextArea txt_Paterno;
+    private JTextArea txt_Materno;
+    private JTextArea txt_Domicilio;
+    private JComboBox<String> comboNacimiento;
+    private JComboBox<String> combo_AreaTrabajo;
+    
+    private JTextArea txt_Curp = new JTextArea();
+    private JLabel lbl_existeCurp = new JLabel("");
+    private JLabel lbl_validez = new JLabel("");
+    private JLabel lblCheckCurp = null;
+    private JLabel lblCheckCaracteres = null;
+    
+    private ImageIcon verde = new ImageIcon(getClass().getResource("/images/check_verde_chico.png"));
+    private ImageIcon rojo = new ImageIcon(getClass().getResource("/images/tache_rojo_chico.png"));
 
     /**
      * Create the panel.
@@ -102,32 +119,101 @@ public class Pnl_alta extends JPanel {
         lblPassword.setBounds(349, 249, 73, 20);
         pnl_Datos.add(lblPassword);
         
-        JTextArea txt_Curp = new JTextArea();
+        lblCheckCurp = new JLabel("");
+        lblCheckCurp.setBounds(288, 78, 46, 38);
+        pnl_Datos.add(lblCheckCurp);
+        
+        lblCheckCaracteres = new JLabel("");
+        lblCheckCaracteres.setBounds(288, 127, 46, 38);
+        pnl_Datos.add(lblCheckCaracteres);
+        
+        JSeparator separator = new JSeparator();
+        separator.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        separator.setBounds(339, 181, 258, 2);
+        pnl_Datos.add(separator);
+        lbl_existeCurp.setHorizontalAlignment(SwingConstants.CENTER);
+        lbl_existeCurp.setOpaque(true);
+        lbl_existeCurp.setBackground(SystemColor.menu);
+        
+        
+        lbl_existeCurp.setFont(new Font("Arial Narrow", Font.BOLD, 17));
+        lbl_existeCurp.setBounds(339, 78, 247, 38);
+        pnl_Datos.add(lbl_existeCurp);
+        
+        
+        lbl_validez.setHorizontalAlignment(SwingConstants.CENTER);
+        lbl_validez.setOpaque(true);
+        lbl_validez.setFont(new Font("Arial Narrow", Font.BOLD, 17));
+        lbl_validez.setBounds(339, 127, 247, 38);
+        pnl_Datos.add(lbl_validez);
+        
+        JLabel lbl_random_password = new JLabel("<html><center>Generar Contraseña Aleatoria<br>(Opcional)</html>", SwingConstants.CENTER);
+        lbl_random_password.setHorizontalAlignment(SwingConstants.CENTER);
+        lbl_random_password.setFont(new Font("Arial Narrow", Font.BOLD, 17));
+        lbl_random_password.setBounds(349, 393, 217, 58);
+        pnl_Datos.add(lbl_random_password);
+        
+        txt_password_alta = new JTextField();
+        txt_password_alta.setBounds(425, 252, 172, 20);
+        pnl_Datos.add(txt_password_alta);
+        txt_password_alta.setColumns(10);
+        
+        JPanel pnl_Opciones = new JPanel();
+        pnl_Opciones.setAlignmentX(Component.LEFT_ALIGNMENT);
+        pnl_Opciones.setBackground(new Color(32, 178, 170));
+        pnl_Opciones.setBorder(new TitledBorder(null, "Opciones", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), null));
+        pnl_Opciones.setLayout(null);
+        pnl_Opciones.setBounds(625, 55, 174, 583);
+        add(pnl_Opciones);
+        
+        //ImageIcon iconoCheck = new ImageIcon(getClass().getResource("src/images/checkGrande.png"));
+        Icon checkIcon = new ImageIcon("src\\images\\checkmark.png"); 
+        JButton btnCheck = new JButton(checkIcon);
+        
+        
+        txt_Curp.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
+            }
+            @Override
+            public void keyTyped(KeyEvent e) {
+                Character c = e.getKeyChar();
+                if(Character.isLetter(c)) {
+                    e.setKeyChar(Character.toUpperCase(c));
+                }
+                if(txt_Curp.getText().length() >= 18) {
+                    e.consume();
+                    Toolkit.getDefaultToolkit().beep();
+                }
+                    
+            }
+        });
         txt_Curp.setFont(new Font("Monospaced", Font.BOLD, 16));
-        txt_Curp.setBounds(83, 96, 164, 20);
+        txt_Curp.setBounds(83, 96, 195, 20);
         pnl_Datos.add(txt_Curp);
         
-        JTextArea txt_Nombre = new JTextArea();
+        txt_Nombre = new JTextArea();
         txt_Nombre.setFont(new Font("Monospaced", Font.BOLD, 16));
-        txt_Nombre.setBounds(83, 145, 164, 20);
+        txt_Nombre.setBounds(83, 145, 195, 20);
         pnl_Datos.add(txt_Nombre);
         
-        JTextArea txt_Paterno = new JTextArea();
+        txt_Paterno = new JTextArea();
         txt_Paterno.setFont(new Font("Monospaced", Font.BOLD, 16));
-        txt_Paterno.setBounds(83, 199, 164, 20);
+        txt_Paterno.setBounds(83, 199, 195, 20);
         pnl_Datos.add(txt_Paterno);
         
-        JTextArea txt_Materno = new JTextArea();
+        txt_Materno = new JTextArea();
         txt_Materno.setFont(new Font("Monospaced", Font.BOLD, 16));
-        txt_Materno.setBounds(83, 250, 164, 20);
+        txt_Materno.setBounds(83, 250, 195, 20);
         pnl_Datos.add(txt_Materno);
         
-        JTextArea txt_Domicilio = new JTextArea();
+        txt_Domicilio = new JTextArea();
         txt_Domicilio.setFont(new Font("Monospaced", Font.BOLD, 16));
-        txt_Domicilio.setBounds(83, 300, 235, 20);
+        txt_Domicilio.setBounds(83, 300, 195, 20);
         pnl_Datos.add(txt_Domicilio);
         
-        JComboBox<String> comboNacimiento = new JComboBox<String>();
+        comboNacimiento = new JComboBox<String>();
         comboNacimiento.addItem("Elegir año");
         for(int i = Calendar.getInstance().get(Calendar.YEAR); i >= (Calendar.getInstance().get(Calendar.YEAR) - 120); i-- ) {
             comboNacimiento.addItem(String.valueOf(i));
@@ -137,7 +223,7 @@ public class Pnl_alta extends JPanel {
         comboNacimiento.setBounds(166, 349, 148, 20);
         pnl_Datos.add(comboNacimiento);
         
-        JComboBox<String> combo_AreaTrabajo = new JComboBox<String>();
+        combo_AreaTrabajo = new JComboBox<String>();
         combo_AreaTrabajo.setFont(new Font("Arial", Font.BOLD, 16));
         combo_AreaTrabajo.setBounds(389, 201, 182, 20);
         combo_AreaTrabajo.addItem("Elegir Area");
@@ -172,7 +258,7 @@ public class Pnl_alta extends JPanel {
             public void mouseExited(MouseEvent me) {
                
                 btn.setBorder(simpleBorder);
-               // btn.setBackground(Color.LIGHT_GRAY);
+               
             }
             
         }
@@ -194,43 +280,9 @@ public class Pnl_alta extends JPanel {
         
         pnl_Datos.add(btn_Random);
         
-        JSeparator separator = new JSeparator();
-        separator.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-        separator.setBounds(339, 181, 258, 2);
-        pnl_Datos.add(separator);
+
         
-        JLabel lbl_longitud = new JLabel("Nombre:");
-        lbl_longitud.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lbl_longitud.setBounds(339, 88, 247, 36);
-        pnl_Datos.add(lbl_longitud);
         
-        JLabel lbl_validez = new JLabel("Nombre:");
-        lbl_validez.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lbl_validez.setBounds(339, 136, 247, 38);
-        pnl_Datos.add(lbl_validez);
-        
-        JLabel lbl_random_password = new JLabel("<html><center>Generar Contraseña Aleatoria<br>(Opcional)</html>", SwingConstants.CENTER);
-        lbl_random_password.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_random_password.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lbl_random_password.setBounds(349, 393, 217, 58);
-        pnl_Datos.add(lbl_random_password);
-        
-        txt_password_alta = new JTextField();
-        txt_password_alta.setBounds(425, 252, 172, 20);
-        pnl_Datos.add(txt_password_alta);
-        txt_password_alta.setColumns(10);
-        
-        JPanel pnl_Opciones = new JPanel();
-        pnl_Opciones.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pnl_Opciones.setBackground(new Color(32, 178, 170));
-        pnl_Opciones.setBorder(new TitledBorder(null, "Opciones", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), null));
-        pnl_Opciones.setLayout(null);
-        pnl_Opciones.setBounds(625, 55, 174, 583);
-        add(pnl_Opciones);
-        
-        //ImageIcon iconoCheck = new ImageIcon(getClass().getResource("src/images/checkGrande.png"));
-        Icon checkIcon = new ImageIcon("src\\images\\checkmark.png"); 
-        JButton btnCheck = new JButton(checkIcon);
        
         /*
          *  ********************************************************************* ALTA DE NUEVOS USUARIOS ***************************************
@@ -274,6 +326,16 @@ public class Pnl_alta extends JPanel {
         Icon iconoBorrar = new ImageIcon("src\\images\\borrar.png");
         JButton btnBorrar = new JButton(iconoBorrar);
         
+        
+        // ***************************************** EVENTO DEL BOTÓN BORRAR, QUE LIMPIA TODOS LOS DATOS DEL FORMULARIO **************************************************
+        
+        
+        btnBorrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                limpiar();
+            }
+        });
+        
         // Cambiamos color del boton al pasar ratón encima
         
         BtnHover cambiaColorbtnBorrar = new BtnHover(btnBorrar);
@@ -285,12 +347,12 @@ public class Pnl_alta extends JPanel {
         
         JLabel lblGuardar = new JLabel("Guardar");
         lblGuardar.setFont(new Font("Arial", Font.BOLD, 14));
-        lblGuardar.setBounds(53, 144, 73, 14);
+        lblGuardar.setBounds(53, 144, 57, 14);
         pnl_Opciones.add(lblGuardar);
         
         JLabel lblBorrar = new JLabel("Borrar");
         lblBorrar.setFont(new Font("Arial", Font.BOLD, 14));
-        lblBorrar.setBounds(53, 281, 50, 14);
+        lblBorrar.setBounds(60, 281, 50, 14);
         pnl_Opciones.add(lblBorrar);
       
     }
@@ -304,7 +366,78 @@ public class Pnl_alta extends JPanel {
         txt_password_alta.setText(randPass1 + randPass2);
         
     }
+    
+    
+    //--- MÉTODO QUE LIMPIA DATOS INTRODUCIDOS EN EL FORMULARIO
+    
+    public void limpiar() {
+        
+        txt_Curp.setText("");
+        txt_Domicilio.setText("");
+        txt_Materno.setText("");
+        txt_Nombre.setText("");
+        txt_password_alta.setText("");
+        txt_Paterno.setText("");
+        lbl_existeCurp.setText(null);
+        lbl_validez.setText(null);
+        lblCheckCaracteres.setIcon(null);
+        lblCheckCurp.setIcon(null);
+        combo_AreaTrabajo.setSelectedIndex(0);
+        comboNacimiento.setSelectedIndex(0);
+    }
+    
+    public void validacion() {
+        
+        String curpStatus = Metodos_SQL.buscaCurp(txt_Curp.getText());
+        
+        // Si el textfield está vacio
+        
+        if(txt_Curp.getText().isEmpty()) {
+            lbl_validez.setText("");
+            lbl_existeCurp.setText("");
+            lblCheckCurp.setIcon(null);
+            lblCheckCaracteres.setIcon(null);
+        }
+                
+        // Si el textfield no está vacío pero tiene menos de 18 caracs
+        
+        else if(curpStatus.equals("No existe curp") && (txt_Curp.getText().length() < 18)) {
+            
+            // Etiqueta e ícono que indican si existe curp, texto indica que no existe, etiqueta se pone verde
+            lbl_existeCurp.setText("<html><center><p>CURP no existe en la base de datos</html>");
+            lbl_existeCurp.setBackground(Color.WHITE);
+            lblCheckCurp.setIcon(verde);
+            
+            // Etiqueta e ícono que validan # de caracteres, texto pide más caracteres e icono se pone rojo
+            
+            lbl_validez.setText("CURP debe ser de 18 caracteres");
+            lblCheckCaracteres.setIcon(rojo);
+        }
+        
+        // Si el textfield ya tiene los 18 caracts y el curp no está registrado
+        
+        else if(curpStatus.equals("No existe curp") && (txt_Curp.getText().length() >= 18)) {
+            lbl_existeCurp.setText("<html><center><p>CURP valido para guardar</html>");
+            lbl_validez.setText("<html><center>Longitud correcta del CURP, 18 caracteres");
+            lblCheckCurp.setIcon(verde);
+            lblCheckCaracteres.setIcon(verde);
+            
+        }
+        
+        // SI YA EXISTE EL CURP
+        
+        else if(curpStatus.equals("Existe curp")) {
+            lbl_existeCurp.setText("<html><center><p>CURP ya registrado, no se puede volver a registrar</html>");
+            lblCheckCurp.setIcon(rojo);
+            lblCheckCaracteres.setIcon(null);
+            lbl_validez.setText("");
+        }
+        
+    } 
+               
 }
+
+
 
 
 

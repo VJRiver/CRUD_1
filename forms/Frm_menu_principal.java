@@ -404,7 +404,6 @@ public class Frm_menu_principal extends JFrame {
           });
         
         
-        System.out.println("Año " + Calendar.getInstance().get(Calendar.YEAR));
     }
 
     

@@ -1,8 +1,6 @@
 package sql;
 import java.sql.*;
 
-import javax.swing.JOptionPane;
-
 public class Conexion_DB {
     
     private static String url = "jdbc:mysql://localhost:3306/db_crud";
@@ -17,7 +15,7 @@ public class Conexion_DB {
         try {
             
             con = DriverManager.getConnection(url, user, pass);
-            JOptionPane.showMessageDialog(null, "Conexion exitosa");
+            System.out.println("Conexion exitosa");
             
             
         }catch(Exception e) {

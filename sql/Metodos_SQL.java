@@ -49,8 +49,81 @@ public class Metodos_SQL {
             }
         }
         }
+    
+    public static String buscaCurp(String curp) {
         
+        String mensaje = null;
+                
+        
+        
+        try {
+           con = Conexion_DB.conexion();
+           String consulta = "SELECT curp from datos_usr WHERE curp = ?";
+            ps = con.prepareStatement(consulta);
+            ps.setString(1, curp);
+            rs = ps.executeQuery();
+            
+            if(rs.next()) {
+                
+                mensaje = "Existe curp";
+                
+            }else {
+                mensaje = "No existe curp";
+               
+            }
+            
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+        return mensaje;
+    }
         
     
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
