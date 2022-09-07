@@ -34,6 +34,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Pnl_alta extends JPanel {
     /**
@@ -54,6 +56,7 @@ public class Pnl_alta extends JPanel {
     private JLabel lbl_validez = new JLabel("");
     private JLabel lblCheckCurp = null;
     private JLabel lblCheckCaracteres = null;
+    private JButton btnCheck;
     
     private ImageIcon verde = new ImageIcon(getClass().getResource("/images/check_verde_chico.png"));
     private ImageIcon rojo = new ImageIcon(getClass().getResource("/images/tache_rojo_chico.png"));
@@ -62,6 +65,8 @@ public class Pnl_alta extends JPanel {
      * Create the panel.
      */
     public Pnl_alta() {
+        
+        
         setBackground(Color.WHITE);
         setLayout(null);
         
@@ -154,6 +159,12 @@ public class Pnl_alta extends JPanel {
         pnl_Datos.add(lbl_random_password);
         
         txt_password_alta = new JTextField();
+        txt_password_alta.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
+            }
+        });
         txt_password_alta.setBounds(425, 252, 172, 20);
         pnl_Datos.add(txt_password_alta);
         txt_password_alta.setColumns(10);
@@ -168,7 +179,8 @@ public class Pnl_alta extends JPanel {
         
         //ImageIcon iconoCheck = new ImageIcon(getClass().getResource("src/images/checkGrande.png"));
         Icon checkIcon = new ImageIcon("src\\images\\checkmark.png"); 
-        JButton btnCheck = new JButton(checkIcon);
+        btnCheck = new JButton(checkIcon);
+        btnCheck.setEnabled(false);
         
         
         txt_Curp.addKeyListener(new KeyAdapter() {
@@ -194,26 +206,55 @@ public class Pnl_alta extends JPanel {
         pnl_Datos.add(txt_Curp);
         
         txt_Nombre = new JTextArea();
+        txt_Nombre.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
+            }
+        });
         txt_Nombre.setFont(new Font("Monospaced", Font.BOLD, 16));
         txt_Nombre.setBounds(83, 145, 195, 20);
         pnl_Datos.add(txt_Nombre);
         
         txt_Paterno = new JTextArea();
+        txt_Paterno.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
+            }
+        });
         txt_Paterno.setFont(new Font("Monospaced", Font.BOLD, 16));
         txt_Paterno.setBounds(83, 199, 195, 20);
         pnl_Datos.add(txt_Paterno);
         
         txt_Materno = new JTextArea();
+        txt_Materno.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
+            }
+        });
         txt_Materno.setFont(new Font("Monospaced", Font.BOLD, 16));
         txt_Materno.setBounds(83, 250, 195, 20);
         pnl_Datos.add(txt_Materno);
         
         txt_Domicilio = new JTextArea();
+        txt_Domicilio.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
+            }
+        });
         txt_Domicilio.setFont(new Font("Monospaced", Font.BOLD, 16));
         txt_Domicilio.setBounds(83, 300, 195, 20);
         pnl_Datos.add(txt_Domicilio);
         
         comboNacimiento = new JComboBox<String>();
+        comboNacimiento.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                validacion();
+            }
+        });
         comboNacimiento.addItem("Elegir año");
         for(int i = Calendar.getInstance().get(Calendar.YEAR); i >= (Calendar.getInstance().get(Calendar.YEAR) - 120); i-- ) {
             comboNacimiento.addItem(String.valueOf(i));
@@ -224,6 +265,11 @@ public class Pnl_alta extends JPanel {
         pnl_Datos.add(comboNacimiento);
         
         combo_AreaTrabajo = new JComboBox<String>();
+        combo_AreaTrabajo.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                validacion();
+            }
+        });
         combo_AreaTrabajo.setFont(new Font("Arial", Font.BOLD, 16));
         combo_AreaTrabajo.setBounds(389, 201, 182, 20);
         combo_AreaTrabajo.addItem("Elegir Area");
@@ -274,6 +320,7 @@ public class Pnl_alta extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 generaPass();
+                validacion();
                 
             }
         });
@@ -311,6 +358,12 @@ public class Pnl_alta extends JPanel {
                 
                 Metodos_SQL altaUsuario = new Metodos_SQL();
                 altaUsuario.guardarDatos(identif, name, pater, mater, address, year, area, pass);
+                
+                // SI SE GUARDO EL USUARIO EXITOSAMENTE, LIMPIA EL FORMULARIO, EN CASO CONTRARIO, LO DEJA IGUAL
+                
+                if(altaUsuario.getResultado() == true) {
+                    limpiar();
+                }
                 
             }
         });
@@ -431,6 +484,16 @@ public class Pnl_alta extends JPanel {
             lblCheckCurp.setIcon(rojo);
             lblCheckCaracteres.setIcon(null);
             lbl_validez.setText("");
+        }
+        
+        
+        //  VALIDA SI LOS DATOS CONTIENEN DATOS PARA ACTIVAR O DESACTIVAR EL BOTÓN GUARDAR
+        
+        if(txt_password_alta.getText().isEmpty() || txt_Curp.getText().isEmpty() || txt_Nombre.getText().isEmpty() || txt_Paterno.getText().isEmpty() || txt_Materno.getText().isEmpty() || txt_Domicilio.getText().isEmpty() || comboNacimiento.getSelectedIndex() == 0 || combo_AreaTrabajo.getSelectedIndex() == 0 || lblCheckCurp.getIcon().equals(rojo) || lblCheckCaracteres.getIcon().equals(rojo) ) {
+            
+            btnCheck.setEnabled(false);
+        }else {
+            btnCheck.setEnabled(true);
         }
         
     } 

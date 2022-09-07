@@ -252,14 +252,19 @@ public class Frm_menu_principal extends JFrame {
                            repaint();
                            
                            btn_Eliminar.setSelected(false);
-                           //btn_Eliminar.setBackground(new Color(204,204,255));
-                           btn_Buscar.setSelected(false);
-                           //btn_Buscar.setBackground(new Color(204, 204, 255));
-                           btn_Modificar.setSelected(false);
-                           //btn_Modificar.setBackground(new Color(204, 204, 255));
                            
                            btn_Buscar.setSelected(false);
-                           //btn_Alta.setBackground(Color.WHITE);
+                           
+                           btn_Modificar.setSelected(false);
+                           
+                           
+                           btn_Buscar.setSelected(false);
+                           
+                           
+                           // REINICIA TODOS LOS CAMPOS QUE HAYAN TENIDO INFORMACIÓN PREVIAMENTE CADA VEZ QUE ABRIMOS ESTE LAYOUT:
+                           panel_alta_vista.limpiar();
+                           
+                           
                         } else {
                             pnl_vista_principal.removeAll();
                             SwingUtilities.updateComponentTreeUI(pnl_vista_principal);
@@ -288,6 +293,7 @@ public class Frm_menu_principal extends JFrame {
                     if(btn_Modificar.isSelected()) {
                        CardLayout vista = (CardLayout) pnl_vista_principal.getLayout();
                        pnl_vista_principal.add(panel_modificar, "modificar");
+                       panel_modificar.limpiarFormulario();
                        vista.show(pnl_vista_principal, "modificar");
                        SwingUtilities.updateComponentTreeUI(pnl_vista_principal);
                        repaint();

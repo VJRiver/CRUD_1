@@ -13,6 +13,7 @@ public class Metodos_SQL {
     private static Connection con;
     private static PreparedStatement ps;
     private static ResultSet rs;
+    private boolean guardado = false;
     
     
     public void guardarDatos(String curp, String nombre, String paterno, String materno, String domicilio, int year, String area, String pass) {
@@ -38,9 +39,14 @@ public class Metodos_SQL {
             
             JOptionPane.showMessageDialog(null, i + "Registros insertados.");
             
+            guardado = true;
+            
+            
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null, "Error al insertar datos");
             e.printStackTrace();
+            guardado = false;
+            
         }finally {
             try {
                 con.close();
@@ -74,18 +80,22 @@ public class Metodos_SQL {
             
             
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }finally {
             try {
                 con.close();
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
         
         return mensaje;
+    }
+    
+    public boolean getResultado() {
+        return guardado;
     }
         
     

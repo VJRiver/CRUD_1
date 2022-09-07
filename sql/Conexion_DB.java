@@ -15,7 +15,7 @@ public class Conexion_DB {
         try {
             
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Conexion exitosa");
+            // System.out.println("Conexion exitosa");
             
             
         }catch(Exception e) {
