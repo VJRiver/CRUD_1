@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import java.sql.Statement;
+
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 
@@ -12,9 +14,46 @@ public class Metodos_SQL {
     
     private static Connection con;
     private static PreparedStatement ps;
-    private static ResultSet rs;
+    private static ResultSet rs = null;
     private boolean guardado = false;
+    private static String[] valores = new String[8];
     
+    public static void setRsValues(String curp) {
+
+         try {
+            con = Conexion_DB.conexion();
+            String consulta = "SELECT * FROM datos_usr WHERE curp = ?";
+            ps = con.prepareStatement(consulta);
+            ps.setString(1, curp);
+            
+            rs = ps.executeQuery();
+            
+            
+            while(rs.next()) {
+                for(int i = 1; i < 9; i++) {
+                    valores[i - 1] = rs.getString(i);
+                }
+            }
+        
+        con.close();
+                        
+        }catch(Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Unable to retrieve ResultSet");
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                
+                e.printStackTrace();
+            }
+        }
+    }
+    
+
+    public static String[] getValores() {
+        return valores;
+    }
     
     public void guardarDatos(String curp, String nombre, String paterno, String materno, String domicilio, int year, String area, String pass) {
         
@@ -37,7 +76,7 @@ public class Metodos_SQL {
             
             con.close();
             
-            JOptionPane.showMessageDialog(null, i + "Registros insertados.");
+            JOptionPane.showMessageDialog(null, i + " registro insertado.");
             
             guardado = true;
             
@@ -98,7 +137,43 @@ public class Metodos_SQL {
         return guardado;
     }
         
-    
+    public static void modificar(String curp, String nombre, String paterno, String materno, String domicilio, int year, String area, String pass) {
+        
+        String sentencia = "UPDATE datos_usr SET nombre = ?, paterno = ?, materno = ?, domicilio = ?, nacimiento = ?, area = ?, password = ? WHERE curp = ?";
+        try {
+            
+            con = Conexion_DB.conexion();
+            PreparedStatement pstmt = con.prepareStatement(sentencia);
+            pstmt.setString(1, nombre);
+            
+            pstmt.setString(2, paterno);
+            pstmt.setString(3, materno);
+            pstmt.setString(4, domicilio);
+            pstmt.setInt(5, year);
+            pstmt.setString(6, area);
+            pstmt.setString(7, pass);
+            pstmt.setString(8, curp);
+            
+            int actualizado = pstmt.executeUpdate();
+            
+            if(actualizado > 0) {
+                JOptionPane.showMessageDialog(null, "Información actualizada");
+            }else {
+                JOptionPane.showMessageDialog(null, "No se pudo actualizar la información");
+            }
+            
+            con.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
 

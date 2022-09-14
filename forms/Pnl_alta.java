@@ -36,6 +36,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.JInternalFrame;
 
 public class Pnl_alta extends JPanel {
     /**
@@ -166,6 +167,7 @@ public class Pnl_alta extends JPanel {
             }
         });
         txt_password_alta.setBounds(425, 252, 172, 20);
+        //txt_password_alta
         pnl_Datos.add(txt_password_alta);
         txt_password_alta.setColumns(10);
         
@@ -256,7 +258,7 @@ public class Pnl_alta extends JPanel {
             }
         });
         comboNacimiento.addItem("Elegir año");
-        for(int i = Calendar.getInstance().get(Calendar.YEAR); i >= (Calendar.getInstance().get(Calendar.YEAR) - 120); i-- ) {
+        for(int i = (Calendar.getInstance().get(Calendar.YEAR) - 17); i >= (Calendar.getInstance().get(Calendar.YEAR) - 120); i-- ) {
             comboNacimiento.addItem(String.valueOf(i));
         }
         
@@ -276,7 +278,7 @@ public class Pnl_alta extends JPanel {
         combo_AreaTrabajo.addItem("Recursos Humanos");
         combo_AreaTrabajo.addItem("Contabilidad");
         combo_AreaTrabajo.addItem("Sistemas");
-        combo_AreaTrabajo.addItem("Operacion");
+        combo_AreaTrabajo.addItem("Operaciones");
         pnl_Datos.add(combo_AreaTrabajo);
         
         Icon iconoRandom = new ImageIcon("src\\images\\dice.png");
@@ -497,7 +499,6 @@ public class Pnl_alta extends JPanel {
         }
         
     } 
-               
 }
 
 

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -37,6 +39,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Pnl_modificar_usr extends JPanel {
+    private static final long serialVersionUID = 1L;
     private JTextField txtPassMod;
     private JTextField txtCurpABuscar;
     private JLabel lbl_titulo_modificar;
@@ -62,6 +65,9 @@ public class Pnl_modificar_usr extends JPanel {
     private JLabel lblBusquedaCurp;
     private ImageIcon verde = new ImageIcon(getClass().getResource("/images/check_verde_chico.png"));
     private ImageIcon rojo = new ImageIcon(getClass().getResource("/images/tache_rojo_chico.png"));
+    private Icon actualizar;
+    private Icon actualizarGif;
+    private JTextField txtNombre;
     
     
     
@@ -96,22 +102,22 @@ public class Pnl_modificar_usr extends JPanel {
         
         lbl_Paterno = new JLabel("Paterno:");
         lbl_Paterno.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lbl_Paterno.setBounds(10, 187, 68, 20);
+        lbl_Paterno.setBounds(10, 239, 68, 20);
         pnl_Datos.add(lbl_Paterno);
         
         lblMaterno = new JLabel("Materno:");
         lblMaterno.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblMaterno.setBounds(10, 238, 68, 20);
+        lblMaterno.setBounds(10, 290, 68, 20);
         pnl_Datos.add(lblMaterno);
         
         lblDomicilio = new JLabel("Domicilio:");
         lblDomicilio.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblDomicilio.setBounds(10, 288, 83, 20);
+        lblDomicilio.setBounds(10, 340, 83, 20);
         pnl_Datos.add(lblDomicilio);
         
         lblFechaDeNacimiento = new JLabel("Año de Nacimiento:");
         lblFechaDeNacimiento.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblFechaDeNacimiento.setBounds(10, 336, 157, 20);
+        lblFechaDeNacimiento.setBounds(10, 388, 157, 20);
         pnl_Datos.add(lblFechaDeNacimiento);
         
         lblArea = new JLabel("Area:");
@@ -126,32 +132,32 @@ public class Pnl_modificar_usr extends JPanel {
         
         txt_PaternoMod = new JTextField();
         txt_PaternoMod.setFont(new Font("Arial", Font.PLAIN, 12));
-        txt_PaternoMod.setBounds(83, 187, 164, 20);
+        txt_PaternoMod.setBounds(83, 239, 164, 20);
         pnl_Datos.add(txt_PaternoMod);
         
         txt_MaternoMod = new JTextField();
         txt_MaternoMod.setFont(new Font("Arial", Font.PLAIN, 12));
-        txt_MaternoMod.setBounds(83, 238, 164, 20);
+        txt_MaternoMod.setBounds(83, 290, 164, 20);
         pnl_Datos.add(txt_MaternoMod);
         
         txt_DomicilioMod = new JTextField();
         txt_DomicilioMod.setFont(new Font("Arial", Font.PLAIN, 12));
-        txt_DomicilioMod.setBounds(83, 288, 235, 20);
+        txt_DomicilioMod.setBounds(83, 340, 235, 20);
         pnl_Datos.add(txt_DomicilioMod);
         
         comboNacimientoMod = new JComboBox<String>();
         comboNacimientoMod.setFont(new Font("Arial", Font.BOLD, 16));
-        comboNacimientoMod.setBounds(150, 337, 196, 20);
-        comboNacimientoMod.addItem("Elegir Año Nacimiento");
-        pnl_Datos.add(comboNacimientoMod);
-        
+        comboNacimientoMod.setBounds(150, 389, 196, 20);
+               
         combo_AreaTrabajoMod = new JComboBox<String>();
         combo_AreaTrabajoMod.setFont(new Font("Arial", Font.BOLD, 16));
         combo_AreaTrabajoMod.setBounds(408, 187, 189, 20);
-
-        // HACE FALTA CENTRAR EL TEXTO DENTRO DEL COMBOBOX
-        combo_AreaTrabajoMod.addItem("Elegir Area");
         
+        // RELLENA LOS COMBOS
+        
+        rellenarCombos();
+
+        pnl_Datos.add(comboNacimientoMod);
         pnl_Datos.add(combo_AreaTrabajoMod);
         
         txtPassMod = new JTextField();
@@ -221,10 +227,19 @@ public class Pnl_modificar_usr extends JPanel {
         lblEncontrado.setBounds(470, 51, 127, 19);
         pnl_Datos.add(lblEncontrado);
         
-
+        JLabel lbl_Nombre = new JLabel("Nombre:");
+        lbl_Nombre.setFont(new Font("Arial Narrow", Font.BOLD, 17));
+        lbl_Nombre.setBounds(10, 187, 68, 20);
+        pnl_Datos.add(lbl_Nombre);
         
+        txtNombre = new JTextField();
+        txtNombre.setFont(new Font("Arial", Font.PLAIN, 12));
+        txtNombre.setBounds(83, 187, 164, 20);
+        pnl_Datos.add(txtNombre);
         
-        // *********************** SEGUNDO PANEL, "OPCIONES" **************************************************************
+                
+        
+        // *********************** SEGUNDO PANEL, "OPCIONES" *****************************************************
         
         JPanel pnl_Opciones = new JPanel();
         pnl_Opciones.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -235,12 +250,26 @@ public class Pnl_modificar_usr extends JPanel {
         add(pnl_Opciones);
         
         //ImageIcon iconoCheck = new ImageIcon(getClass().getResource("src/images/checkGrande.png"));
-        Icon actualizar = new ImageIcon("src\\images\\checkmark.png"); 
+        actualizar = new ImageIcon("src\\images\\checkGrande.png"); 
+        actualizarGif = new ImageIcon("src\\images\\actualizar2.gif");
         btnActualizar = new JButton(actualizar);
+        
         
         btnActualizar.setBounds(24, 59, 125, 74);
         btnActualizar.setEnabled(false);
+         
+        btnActualizar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+                modificar();
+                    
+            }
+        });
+        
         pnl_Opciones.add(btnActualizar);
+        
+        // Actualiza datos
+        
         
         Icon iconoBorrar = new ImageIcon("src\\images\\borrar.png");
         JButton btnBorrar = new JButton(iconoBorrar);
@@ -250,7 +279,7 @@ public class Pnl_modificar_usr extends JPanel {
             }
         });
         
-        // btnBorrar.setBackground(Color.WHITE);
+       
         btnBorrar.setBounds(24, 196, 125, 74);
         pnl_Opciones.add(btnBorrar);
         
@@ -273,7 +302,9 @@ public class Pnl_modificar_usr extends JPanel {
             
         } 
    
-   public void validacion() {
+   public boolean validacion() {
+       
+       boolean valido = false;
        
        String curpStatus = Metodos_SQL.buscaCurp(txtCurpABuscar.getText());
        
@@ -281,6 +312,7 @@ public class Pnl_modificar_usr extends JPanel {
        
        if(txtCurpABuscar.getText().isEmpty()) {
            
+           limpiarSubFormulario();
            lblEncontrado.setText("");
            lblIconoEncontrado.setText("");
            lblIconoEncontrado.setIcon(null);
@@ -293,6 +325,7 @@ public class Pnl_modificar_usr extends JPanel {
        else if(curpStatus.equals("No existe curp") || (txtCurpABuscar.getText().length() < 18)) {
            
            // Etiqueta e ícono que indican si existe curp, texto indica que no existe, etiqueta se pone verde
+           limpiarSubFormulario();
            lblEncontrado.setText("<html><center><p>No Encontrado</html>");
            lblEncontrado.setBackground(Color.WHITE);
            lblIconoEncontrado.setIcon(rojo);
@@ -307,35 +340,70 @@ public class Pnl_modificar_usr extends JPanel {
            lblIconoEncontrado.setIcon(verde);
            btnActualizar.setEnabled(true);
            
-       }
-       
-      //  VALIDA SI LOS CAMPOS CONTIENEN DATOS PARA ACTIVAR O DESACTIVAR EL BOTÓN GUARDAR
-       
-       /* if(txt_password_alta.getText().isEmpty() || txt_Curp.getText().isEmpty() || txt_Nombre.getText().isEmpty() || txt_Paterno.getText().isEmpty() || txt_Materno.getText().isEmpty() || txt_Domicilio.getText().isEmpty() || comboNacimiento.getSelectedIndex() == 0 || combo_AreaTrabajo.getSelectedIndex() == 0 || lblCheckCurp.getIcon().equals(rojo) || lblCheckCaracteres.getIcon().equals(rojo) ) {
+           Metodos_SQL.setRsValues(txtCurpABuscar.getText());
            
-           btnCheck.setEnabled(false);
-       }else {
-           btnCheck.setEnabled(true);
-       }*/
+           String[] datosAModificar = Metodos_SQL.getValores();
+           
+           txtNombre.setText(datosAModificar[1]);
+           txt_PaternoMod.setText(datosAModificar[2]);
+           txt_MaternoMod.setText(datosAModificar[3]);
+           txt_DomicilioMod.setText(datosAModificar[4]);
+           comboNacimientoMod.setSelectedItem(datosAModificar[5]);
+           combo_AreaTrabajoMod.setSelectedItem(datosAModificar[6]);
+           txtPassMod.setText(datosAModificar[7]);
+           valido = true;
+           }
        
-   } 
-   
+       return valido;
+   }
    
    public void limpiarFormulario() {
-       txtPassMod.setText("");
        txtCurpABuscar.setText("");
+       limpiarSubFormulario();
+       
+   }
+   
+   public void limpiarSubFormulario() {
+       txtPassMod.setText("");
        lblIconoEncontrado.setText("");
        lblIconoEncontrado.setIcon(null);
        lblEncontrado.setText(null);
+       txtNombre.setText(null);
        txt_PaternoMod.setText("");
        txt_MaternoMod.setText("");
        txt_DomicilioMod.setText("");
        comboNacimientoMod.setSelectedIndex(0);
        combo_AreaTrabajoMod.setSelectedIndex(0);
        btnActualizar.setEnabled(false);
+   }
+   
+   public void rellenarCombos() {
+       
+       combo_AreaTrabajoMod.addItem("Elegir Area");
+       combo_AreaTrabajoMod.addItem("Recursos Humanos");
+       combo_AreaTrabajoMod.addItem("Contabilidad");
+       combo_AreaTrabajoMod.addItem("Sistemas");
+       combo_AreaTrabajoMod.addItem("Operaciones");
+       
+       comboNacimientoMod.addItem("Elegir año Nacimiento");
+       
+       for(int i = (Calendar.getInstance().get(Calendar.YEAR) - 17); i >= (Calendar.getInstance().get(Calendar.YEAR) - 120); i--) {
+           comboNacimientoMod.addItem(Integer.toString(i));
+       }
        
    }
    
+   public void modificar() {
+       String ID = txtCurpABuscar.getText();
+       String name = txtNombre.getText();
+       String first = txt_PaternoMod.getText();
+       String last = txt_MaternoMod.getText();
+       String address = txt_DomicilioMod.getText();
+       int year = Integer.parseInt((String)comboNacimientoMod.getSelectedItem());
+       String area = (String) combo_AreaTrabajoMod.getSelectedItem();
+       String pass = txtPassMod.getText();
+       Metodos_SQL.modificar(ID, name, first, last, address, year, area, pass);
+   }
 }
 
 

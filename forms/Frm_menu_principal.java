@@ -299,11 +299,11 @@ public class Frm_menu_principal extends JFrame {
                        repaint();
                       
                        btn_Alta.setSelected(false);
-                       //btn_Alta.setBackground(new Color(204,204,255));
+                       
                        btn_Buscar.setSelected(false);
-                       //btn_Buscar.setBackground(new Color(204, 204, 255));
+                       
                        btn_Eliminar.setSelected(false);
-                       //btn_Eliminar.setBackground(new Color(204, 204, 255));
+                       
                        
                        
                        
@@ -388,11 +388,11 @@ public class Frm_menu_principal extends JFrame {
                        repaint();
                        
                        btn_Alta.setSelected(false);
-                       //btn_Alta.setBackground(new Color(204,204,255));
+                      
                        btn_Eliminar.setSelected(false);
-                       //btn_Eliminar.setBackground(new Color(204, 204, 255));
+                       
                        btn_Modificar.setSelected(false);
-                       //btn_Modificar.setBackground(new Color(204, 204, 255));;
+                       
                        
                        
                    }else {
