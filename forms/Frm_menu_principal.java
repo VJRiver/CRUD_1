@@ -66,6 +66,7 @@ public class Frm_menu_principal extends JFrame {
     
     Pnl_modificar_usr panel_modificar = new Pnl_modificar_usr();
     
+    
     // ****************** Panel Eliminación *******************************************************
     
     Pnl_eliminar_usr panel_eliminar = new Pnl_eliminar_usr();
@@ -297,7 +298,8 @@ public class Frm_menu_principal extends JFrame {
                        vista.show(pnl_vista_principal, "modificar");
                        SwingUtilities.updateComponentTreeUI(pnl_vista_principal);
                        repaint();
-                      
+                       
+                       panel_modificar.posicionaCursor();
                        btn_Alta.setSelected(false);
                        
                        btn_Buscar.setSelected(false);

@@ -535,6 +535,10 @@ public class Pnl_modificar_usr extends JPanel {
             btnBorrar.setEnabled(true);
         }
     }
+    
+    public void posicionaCursor() {
+        txtCurpABuscar.requestFocusInWindow();
+    }
 
 }
 
