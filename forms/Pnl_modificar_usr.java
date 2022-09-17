@@ -313,6 +313,9 @@ public class Pnl_modificar_usr extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 modificar();
+                txtCurpABuscar.setText("");
+                deshabilitar();
+                deshabilitaBorrar();
 
             }
         });
