@@ -27,6 +27,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class Pnl_eliminar_usr extends JPanel {
+    private JTextField textField;
     /**
      * Create the panel.
      */
@@ -39,74 +40,74 @@ public class Pnl_eliminar_usr extends JPanel {
         pnl_Datos.setBackground(new Color(32, 178, 170));
         TitledBorder borde = new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Inserte datos del usuario", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), new Color(0, 0, 0));
         
-        pnl_Datos.setBorder(borde);
-        pnl_Datos.setBounds(10, 55, 607, 583);
+        pnl_Datos.setBorder(null);
+        pnl_Datos.setBounds(10, 176, 607, 462);
         add(pnl_Datos);
         pnl_Datos.setLayout(null);
         
         JLabel lbl_tituloTabla = new JLabel("Datos del Usuario");
         lbl_tituloTabla.setFont(new Font("Arial", Font.BOLD, 14));
-        lbl_tituloTabla.setBounds(10, 91, 137, 14);
+        lbl_tituloTabla.setBounds(10, 30, 137, 14);
         pnl_Datos.add(lbl_tituloTabla);
         
         JLabel lbl_Paterno = new JLabel("Paterno:");
         lbl_Paterno.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lbl_Paterno.setBounds(10, 136, 68, 20);
+        lbl_Paterno.setBounds(10, 75, 68, 20);
         pnl_Datos.add(lbl_Paterno);
         
         JLabel lblMaterno = new JLabel("Materno:");
         lblMaterno.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblMaterno.setBounds(10, 187, 68, 20);
+        lblMaterno.setBounds(10, 126, 68, 20);
         pnl_Datos.add(lblMaterno);
         
         JLabel lblDomicilio = new JLabel("Domicilio:");
         lblDomicilio.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblDomicilio.setBounds(10, 237, 83, 20);
+        lblDomicilio.setBounds(10, 176, 83, 20);
         pnl_Datos.add(lblDomicilio);
         
         JLabel lblFechaDeNacimiento = new JLabel("Año de Nacimiento:");
         lblFechaDeNacimiento.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblFechaDeNacimiento.setBounds(10, 285, 157, 20);
+        lblFechaDeNacimiento.setBounds(10, 224, 157, 20);
         pnl_Datos.add(lblFechaDeNacimiento);
         
         JLabel lblArea = new JLabel("Area:");
         lblArea.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblArea.setBounds(349, 136, 42, 20);
+        lblArea.setBounds(349, 75, 42, 20);
         pnl_Datos.add(lblArea);
         
         JLabel lblPassword = new JLabel("Password:");
         lblPassword.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lblPassword.setBounds(349, 186, 73, 20);
+        lblPassword.setBounds(349, 125, 73, 20);
         pnl_Datos.add(lblPassword);
         
         JLabel lbl_show_paterno = new JLabel("---");
         lbl_show_paterno.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_show_paterno.setBounds(166, 141, 46, 14);
+        lbl_show_paterno.setBounds(166, 80, 46, 14);
         pnl_Datos.add(lbl_show_paterno);
         
         JLabel lbl_show_materno = new JLabel("---");
         lbl_show_materno.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_show_materno.setBounds(166, 192, 46, 14);
+        lbl_show_materno.setBounds(166, 131, 46, 14);
         pnl_Datos.add(lbl_show_materno);
         
         JLabel lbl_show_domicilio = new JLabel("---");
         lbl_show_domicilio.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_show_domicilio.setBounds(166, 242, 46, 14);
+        lbl_show_domicilio.setBounds(166, 181, 46, 14);
         pnl_Datos.add(lbl_show_domicilio);
         
         JLabel lbl_show_nacimiento = new JLabel("---");
         lbl_show_nacimiento.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_show_nacimiento.setBounds(166, 290, 46, 14);
+        lbl_show_nacimiento.setBounds(166, 229, 46, 14);
         pnl_Datos.add(lbl_show_nacimiento);
         
         JLabel lbl_show_area = new JLabel("---");
         lbl_show_area.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_show_area.setBounds(436, 141, 46, 14);
+        lbl_show_area.setBounds(436, 80, 46, 14);
         pnl_Datos.add(lbl_show_area);
         
         JLabel lbl_show_pass = new JLabel("---");
         lbl_show_pass.setHorizontalAlignment(SwingConstants.CENTER);
-        lbl_show_pass.setBounds(436, 191, 46, 14);
+        lbl_show_pass.setBounds(436, 130, 46, 14);
         pnl_Datos.add(lbl_show_pass);
 
         
@@ -144,7 +145,7 @@ public class Pnl_eliminar_usr extends JPanel {
         pnl_Opciones.setBackground(new Color(32, 178, 170));
         pnl_Opciones.setBorder(new TitledBorder(null, "Opciones", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), null));
         pnl_Opciones.setLayout(null);
-        pnl_Opciones.setBounds(625, 55, 174, 583);
+        pnl_Opciones.setBounds(625, 176, 174, 462);
         add(pnl_Opciones);
         
         //ImageIcon iconoCheck = new ImageIcon(getClass().getResource("src/images/checkGrande.png"));
@@ -170,5 +171,35 @@ public class Pnl_eliminar_usr extends JPanel {
         lbl_titulo_eliminar.setFont(new Font("Linux Biolinum G", Font.BOLD, 34));
         lbl_titulo_eliminar.setBounds(182, 11, 270, 27);
         add(lbl_titulo_eliminar);
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+        panel.setBackground(new Color(32, 178, 170));
+        panel.setBounds(10, 76, 789, 86);
+        add(panel);
+        
+        JLabel lblCurpABuscar = new JLabel("Inserte CURP a eliminar:");
+        lblCurpABuscar.setFont(new Font("Arial", Font.BOLD, 16));
+        lblCurpABuscar.setBounds(10, 30, 194, 28);
+        panel.add(lblCurpABuscar);
+        
+        textField = new JTextField();
+        textField.setFont(new Font("Arial", Font.PLAIN, 14));
+        textField.setColumns(10);
+        textField.setBounds(203, 32, 248, 23);
+        panel.add(textField);
+        
+        JLabel lblCheckIcon = new JLabel("...");
+        lblCheckIcon.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblCheckIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCheckIcon.setBounds(471, 32, 33, 28);
+        panel.add(lblCheckIcon);
+        
+        JLabel lblEncontradoONo = new JLabel(".......");
+        lblEncontradoONo.setFont(new Font("Arial", Font.BOLD, 15));
+        lblEncontradoONo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblEncontradoONo.setBounds(527, 30, 252, 23);
+        panel.add(lblEncontradoONo);
     }
 }
