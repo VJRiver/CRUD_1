@@ -39,7 +39,7 @@ public class Metodos_SQL {
                         
         }catch(Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Unable to retrieve ResultSet");
+            JOptionPane.showMessageDialog(null, "No se puede recuperar ResultSet");
         }finally {
             try {
                 con.close();

@@ -106,6 +106,7 @@ public class Frm_menu_principal extends JFrame {
      */
     public Frm_menu_principal() {
         
+        
         getContentPane().setLayout(new GridLayout());
        
         setTitle("____________________________________Sistema CRUD básico");
@@ -345,18 +346,14 @@ public class Frm_menu_principal extends JFrame {
                        // hacer que cuando presionemos este botón, los demás se levanten
                        
                        btn_Alta.setSelected(false);
-                       //btn_Alta.setBackground(new Color(204,204,255));
                        btn_Buscar.setSelected(false);
-                       //btn_Buscar.setBackground(new Color(204, 204, 255));
                        btn_Modificar.setSelected(false);
-                       //btn_Modificar.setBackground(new Color(204, 204, 255));
-                       // btn_Eliminar.setBackground(Color.WHITE);
+                     
                        
                        
                        
                    
                    }else {
-                       // btn_Eliminar.setBackground(new Color(204, 204, 255));
                        pnl_vista_principal.removeAll();
                        SwingUtilities.updateComponentTreeUI(pnl_vista_principal);
                        repaint();
