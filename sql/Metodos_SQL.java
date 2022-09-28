@@ -174,6 +174,35 @@ public class Metodos_SQL {
             }
         }
     }
+    
+    public static void eliminar(String curp) {
+        String sentenciaBorrar = "DELETE FROM datos_usr WHERE curp=?";
+        try {
+            con = Conexion_DB.conexion();
+            PreparedStatement ps = con.prepareStatement(sentenciaBorrar);
+            ps.setString(1, curp);
+            
+            int borrado = ps.executeUpdate();
+            
+            if(borrado > 0) {
+                JOptionPane.showMessageDialog(null, "El registro con CURP " + curp + " ha sido eliminado de la base de datos");
+            }else {
+                JOptionPane.showMessageDialog(null, "Error: No se pudo eliminar registro");
+            }
+            
+            con.close();
+        }catch(Exception e) {
+            System.out.println("No se pudo eliminar registro");
+            e.printStackTrace();
+            
+        }finally {
+            try {
+                con.close();
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
 }
 

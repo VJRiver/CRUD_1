@@ -13,6 +13,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -60,6 +61,7 @@ public class Pnl_eliminar_usr extends JPanel {
     public Pnl_eliminar_usr() {
         
         btnEliminar = new JButton();
+        
         btnLimpiar = new JButton();
         btnLimpiar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -292,6 +294,12 @@ public class Pnl_eliminar_usr extends JPanel {
         bloquear();
         
         setPng();
+        
+        btnEliminar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                borrar(txtCurpAEliminar.getText());
+            }
+        });
     }
     
     public void setGif(){
@@ -391,6 +399,21 @@ public class Pnl_eliminar_usr extends JPanel {
         lbl_show_area.setText(lblValues[6]);
         lbl_show_pass.setText(lblValues[7]);
         
+    }
+    
+    public void borrar(String curp) {
+        int confirmacion = JOptionPane.showConfirmDialog(null, "El registro con CURP " + curp + " será eliminado. \n ¿Desea continuar?", "Alerta!!!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        
+        if(confirmacion == JOptionPane.CANCEL_OPTION) {
+            JOptionPane.showMessageDialog(null, "El registro no fue eliminado");
+        }else {
+            Metodos_SQL.eliminar(curp);
+            limpiar();
+            limpiarCurp();
+            bloquear();
+            btnLimpiar.setEnabled(false);
+            
+        }
     }
 }
 

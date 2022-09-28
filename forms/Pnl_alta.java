@@ -43,7 +43,8 @@ public class Pnl_alta extends JPanel {
      * 
      */
     private static final long serialVersionUID = 1L;
-    JButton btn_Random;
+    private JButton btn_Random;
+    private JButton btnBorrar;
     private JTextField txt_password_alta;
     private JTextArea txt_Nombre;
     private JTextArea txt_Paterno;
@@ -67,6 +68,9 @@ public class Pnl_alta extends JPanel {
      */
     public Pnl_alta() {
         
+        Icon iconoBorrar = new ImageIcon("src\\images\\borrar.png");
+        btnBorrar = new JButton(iconoBorrar);
+        btnBorrar.setEnabled(false);
         
         setBackground(Color.WHITE);
         setLayout(null);
@@ -255,6 +259,7 @@ public class Pnl_alta extends JPanel {
         comboNacimiento.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 validacion();
+                
             }
         });
         comboNacimiento.addItem("Elegir año");
@@ -378,8 +383,7 @@ public class Pnl_alta extends JPanel {
         btnCheck.setBounds(24, 59, 125, 74);
         pnl_Opciones.add(btnCheck);
         
-        Icon iconoBorrar = new ImageIcon("src\\images\\borrar.png");
-        JButton btnBorrar = new JButton(iconoBorrar);
+        
         
         
         // ***************************************** EVENTO DEL BOTÓN BORRAR, QUE LIMPIA TODOS LOS DATOS DEL FORMULARIO **************************************************
@@ -388,6 +392,7 @@ public class Pnl_alta extends JPanel {
         btnBorrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 limpiar();
+                
             }
         });
         
@@ -439,6 +444,7 @@ public class Pnl_alta extends JPanel {
         lblCheckCurp.setIcon(null);
         combo_AreaTrabajo.setSelectedIndex(0);
         comboNacimiento.setSelectedIndex(0);
+        
     }
     
     public void validacion() {
@@ -452,6 +458,7 @@ public class Pnl_alta extends JPanel {
             lbl_existeCurp.setText("");
             lblCheckCurp.setIcon(null);
             lblCheckCaracteres.setIcon(null);
+            btnBorrar.setEnabled(false);
         }
                 
         // Si el textfield no está vacío pero tiene menos de 18 caracs
@@ -467,6 +474,7 @@ public class Pnl_alta extends JPanel {
             
             lbl_validez.setText("CURP debe ser de 18 caracteres");
             lblCheckCaracteres.setIcon(rojo);
+            btnBorrar.setEnabled(true);
         }
         
         // Si el textfield ya tiene los 18 caracts y el curp no está registrado
@@ -476,6 +484,7 @@ public class Pnl_alta extends JPanel {
             lbl_validez.setText("<html><center>Longitud correcta del CURP, 18 caracteres");
             lblCheckCurp.setIcon(verde);
             lblCheckCaracteres.setIcon(verde);
+            btnBorrar.setEnabled(true);
             
         }
         
