@@ -252,6 +252,7 @@ public class Frm_menu_principal extends JFrame {
                            vista.show(pnl_vista_principal, "alta");
                            SwingUtilities.updateComponentTreeUI(pnl_vista_principal);
                            repaint();
+                           panel_alta_vista.posicionaCursor();
                            
                            btn_Eliminar.setSelected(false);
                            
@@ -343,6 +344,7 @@ public class Frm_menu_principal extends JFrame {
                        SwingUtilities.updateComponentTreeUI(pnl_vista_principal);
                        repaint();
                        
+                       panel_eliminar.posicionaCursor();
                        // hacer que cuando presionemos este botón, los demás se levanten
                        
                        btn_Alta.setSelected(false);

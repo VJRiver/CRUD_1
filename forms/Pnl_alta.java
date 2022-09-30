@@ -256,6 +256,8 @@ public class Pnl_alta extends JPanel {
         pnl_Datos.add(txt_Domicilio);
         
         comboNacimiento = new JComboBox<String>();
+        
+         
         comboNacimiento.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 validacion();
@@ -392,7 +394,7 @@ public class Pnl_alta extends JPanel {
         btnBorrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 limpiar();
-                
+                posicionaCursor();
             }
         });
         
@@ -414,7 +416,10 @@ public class Pnl_alta extends JPanel {
         lblBorrar.setFont(new Font("Arial", Font.BOLD, 14));
         lblBorrar.setBounds(60, 281, 50, 14);
         pnl_Opciones.add(lblBorrar);
-      
+        
+        // Al iniciar este panel, todos los componentes deben estar vacíos y el btn borrar deshabilitado
+        limpiar();
+        validacion();
     }
     
  // Crea password aleatorio, lo pega en el textfield sobre el botón
@@ -444,6 +449,7 @@ public class Pnl_alta extends JPanel {
         lblCheckCurp.setIcon(null);
         combo_AreaTrabajo.setSelectedIndex(0);
         comboNacimiento.setSelectedIndex(0);
+        posicionaCursor();
         
     }
     
@@ -459,6 +465,7 @@ public class Pnl_alta extends JPanel {
             lblCheckCurp.setIcon(null);
             lblCheckCaracteres.setIcon(null);
             btnBorrar.setEnabled(false);
+            posicionaCursor();
         }
                 
         // Si el textfield no está vacío pero tiene menos de 18 caracs
@@ -508,6 +515,9 @@ public class Pnl_alta extends JPanel {
         }
         
     } 
+    public void posicionaCursor() {
+        txt_Curp.requestFocusInWindow();
+    }
 }
 
 

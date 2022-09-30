@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
@@ -68,6 +67,7 @@ public class Pnl_eliminar_usr extends JPanel {
                 limpiarCurp();
                 bloquear();
                 btnLimpiar.setEnabled(false);
+                posicionaCursor();
             }
         });
         btnLimpiar.setEnabled(false);
@@ -272,7 +272,9 @@ public class Pnl_eliminar_usr extends JPanel {
         txtCurpAEliminar.setFont(new Font("Arial", Font.PLAIN, 14));
         txtCurpAEliminar.setColumns(10);
         txtCurpAEliminar.setBounds(226, 34, 248, 23);
+        posicionaCursor();
         pnlEliminar.add(txtCurpAEliminar);
+        
         
         lblCheckIcon = new JLabel("...");
         lblCheckIcon.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -298,6 +300,7 @@ public class Pnl_eliminar_usr extends JPanel {
         btnEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 borrar(txtCurpAEliminar.getText());
+                posicionaCursor();
             }
         });
     }
@@ -406,14 +409,24 @@ public class Pnl_eliminar_usr extends JPanel {
         
         if(confirmacion == JOptionPane.CANCEL_OPTION) {
             JOptionPane.showMessageDialog(null, "El registro no fue eliminado");
+            limpiar();
+            limpiarCurp();
+            bloquear();
+            btnLimpiar.setEnabled(false);
+            posicionaCursor();
         }else {
             Metodos_SQL.eliminar(curp);
             limpiar();
             limpiarCurp();
             bloquear();
             btnLimpiar.setEnabled(false);
+            posicionaCursor();
             
         }
+    }
+    
+    public void posicionaCursor() {
+        txtCurpAEliminar.requestFocusInWindow();
     }
 }
 
