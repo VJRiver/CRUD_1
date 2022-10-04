@@ -75,12 +75,6 @@ public class Frm_menu_principal extends JFrame {
     
     Pnl_buscar_usr panel_buscar = new Pnl_buscar_usr();
     
-    
-    
-    
-    
-    
-
     /**
      * Launch the application.
      */

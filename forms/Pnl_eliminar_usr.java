@@ -359,6 +359,8 @@ public class Pnl_eliminar_usr extends JPanel {
     
     public void limpiarCurp() {
         txtCurpAEliminar.setText(null);
+        lblCheckIcon.setIcon(null);
+        lblEncontradoONo.setText(null);
     }
     
     public void validacion() {

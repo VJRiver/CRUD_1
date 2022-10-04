@@ -335,11 +335,7 @@ public class Pnl_alta extends JPanel {
         });
         
         pnl_Datos.add(btn_Random);
-        
-
-        
-        
-       
+               
         /*
          *  ********************************************************************* ALTA DE NUEVOS USUARIOS ***************************************
          */
@@ -395,6 +391,7 @@ public class Pnl_alta extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 limpiar();
                 posicionaCursor();
+                btnBorrar.setEnabled(false);
             }
         });
         
