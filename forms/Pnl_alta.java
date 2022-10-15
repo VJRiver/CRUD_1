@@ -36,7 +36,6 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import javax.swing.JInternalFrame;
 
 public class Pnl_alta extends JPanel {
     /**

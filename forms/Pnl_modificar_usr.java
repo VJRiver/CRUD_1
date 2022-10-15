@@ -57,7 +57,6 @@ public class Pnl_modificar_usr extends JPanel {
     private ImageIcon verde = new ImageIcon(getClass().getResource("/images/check_verde_chico.png"));
     private ImageIcon rojo = new ImageIcon(getClass().getResource("/images/tache_rojo_chico.png"));
     private Icon actualizar;
-    private Icon actualizarGif;
     private JTextField txtNombre;
 
 
@@ -290,7 +289,7 @@ public class Pnl_modificar_usr extends JPanel {
         // ImageIcon iconoCheck = new
         // ImageIcon(getClass().getResource("src/images/checkGrande.png"));
         actualizar = new ImageIcon("src\\images\\checkGrande.png");
-        actualizarGif = new ImageIcon("src\\images\\actualizar2.gif");
+        new ImageIcon("src\\images\\actualizar2.gif");
         btnActualizar = new JButton(actualizar);
 
         btnActualizar.setBounds(24, 59, 125, 74);

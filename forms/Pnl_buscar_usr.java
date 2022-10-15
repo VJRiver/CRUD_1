@@ -7,9 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.UUID;
-
+import sql.Conexion_DB;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,9 +30,31 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableColumn;
+
+import sql.Metodos_SQL;
+
+import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Pnl_buscar_usr extends JPanel {
-    private JTable tbl_buscar;
+    private static final long serialVersionUID = 1L;
+    private JTextField txtCurp;
+    private JTable tblDatos;
+    private DefaultTableModel modelo;
+    private Icon iconoBorrar;
+    private JPanel pnlBusqueda;
+    private JLabel lblSearchIcon;
+    private JLabel lblSearchResult;
+    private JScrollPane scrollPnlDatos;
+    private ResultSet rs;
+    private Connection con;
+    private Icon tache;
+    private Icon check;
+    
     /**
      * Create the panel.
      */
@@ -38,100 +64,146 @@ public class Pnl_buscar_usr extends JPanel {
         setLayout(null);
         
         JLabel lbl_titulo_buscar = new JLabel("Buscar Usuario");
-        lbl_titulo_buscar.setFont(new Font("Linux Biolinum G", Font.BOLD, 34));
-        lbl_titulo_buscar.setBounds(171, 11, 244, 27);
+        lbl_titulo_buscar.setFont(new Font("Linux Libertine G", Font.BOLD, 36));
+        lbl_titulo_buscar.setBounds(10, 11, 261, 27);
         add(lbl_titulo_buscar);
-        
-        JPanel pnl_Datos = new JPanel();
-        pnl_Datos.setBackground(new Color(32, 178, 170));
-        TitledBorder borde = new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Inserte datos del usuario", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), new Color(0, 0, 0));
-        
-        pnl_Datos.setBorder(borde);
-        pnl_Datos.setBounds(10, 55, 607, 583);
-        add(pnl_Datos);
-        pnl_Datos.setLayout(null);
-        
-        JLabel lbl_tabla_buscar = new JLabel("Datos de usuario");
-        lbl_tabla_buscar.setFont(new Font("Arial Narrow", Font.BOLD, 17));
-        lbl_tabla_buscar.setBounds(10, 95, 118, 20);
-        pnl_Datos.add(lbl_tabla_buscar);
-        
-        tbl_buscar = new JTable();
-        lbl_tabla_buscar.setLabelFor(tbl_buscar);
-        tbl_buscar.setBounds(596, 126, -581, 405);
-        pnl_Datos.add(tbl_buscar);
+        TitledBorder borde = new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Inserte datos del usuario", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), new Color(0,0,128));
 
-        
-        Icon iconoRandom = new ImageIcon("src\\images\\dice.png");
-        
-        
         // Btn cambia color cuando el mouse pasa por encima
         
-        class BtnHover extends MouseAdapter{
-            
-            JButton btn;
-            Border raisedBorder = BorderFactory.createRaisedBevelBorder();
-            Border simpleBorder = BorderFactory.createLineBorder(Color.GRAY);
-            
-            public BtnHover(JButton btn) {
-                this.btn = btn;
+        new ImageIcon("src\\images\\checkmark.png");
+        
+        iconoBorrar = new ImageIcon("src\\images\\borrar.png");
+        
+        pnlBusqueda = new JPanel();
+        pnlBusqueda.setBorder(new TitledBorder(null, "B\u00FAsqueda Aproximada", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), new Color(0, 0, 128)));
+        pnlBusqueda.setBackground(new Color(32,178,170));
+        pnlBusqueda.setBounds(10, 49, 794, 94);
+        add(pnlBusqueda);
+        pnlBusqueda.setLayout(null);
+        
+        JLabel lblSearchTitle = new JLabel("Escriba CURP a buscar");
+        lblSearchTitle.setForeground(new Color(0, 0, 0));
+        lblSearchTitle.setFont(new Font("Arial", Font.BOLD, 14));
+        lblSearchTitle.setBounds(10, 40, 171, 14);
+        pnlBusqueda.add(lblSearchTitle);
                 
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Curp");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido Paterno");
+        modelo.addColumn("Apellido Materno");
+        modelo.addColumn("Domicilio");
+        modelo.addColumn("Año Nac");
+        modelo.addColumn("Area");
+        modelo.addColumn("Password");
                 
+        tache = new ImageIcon(getClass().getResource("/images/tache_rojo_chico.png"));
+        check = new ImageIcon(getClass().getResource("/images/check_verde_chico.png"));
+        
+        txtCurp = new JTextField();
+        txtCurp.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validacion();
             }
-            
-            public void mouseEntered(MouseEvent me) {
-                btn.setBorder(raisedBorder);
-            }
-            
-            public void mouseExited(MouseEvent me) {
-               
-                btn.setBorder(simpleBorder);
-               // btn.setBackground(Color.LIGHT_GRAY);
-            }
-            
-        }
+        });
+        txtCurp.setFont(new Font("Arial", Font.BOLD, 15));
+        txtCurp.setBounds(180, 38, 220, 20);
+        pnlBusqueda.add(txtCurp);
+        txtCurp.setColumns(10);
         
-        JPanel pnl_Opciones = new JPanel();
-        pnl_Opciones.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pnl_Opciones.setBackground(new Color(32, 178, 170));
-        pnl_Opciones.setBorder(new TitledBorder(null, "Opciones", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 20), null));
-        pnl_Opciones.setLayout(null);
-        pnl_Opciones.setBounds(625, 55, 174, 583);
-        add(pnl_Opciones);
+        lblSearchIcon = new JLabel("---");
+        lblSearchIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSearchIcon.setBounds(410, 32, 32, 32);
+        pnlBusqueda.add(lblSearchIcon);
         
-        //ImageIcon iconoCheck = new ImageIcon(getClass().getResource("src/images/checkGrande.png"));
-        Icon checkIcon = new ImageIcon("src\\images\\checkmark.png"); 
-        JButton btnCheck = new JButton(checkIcon);
+        lblSearchResult = new JLabel("----");
+        lblSearchResult.setFont(new Font("Arial", Font.BOLD, 15));
+        lblSearchResult.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSearchResult.setBounds(452, 41, 250, 17);
+        pnlBusqueda.add(lblSearchResult);
         
-        // Tratamos de cambiar color del boton al pasar ratón encima. No cambia, supongo que la imagen cubre todo el botón.
+        scrollPnlDatos = new JScrollPane();
+        scrollPnlDatos.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Datos encontrados", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial", Font.BOLD, 18), new Color(0, 0, 128)));
+        scrollPnlDatos.setBounds(10, 153, 794, 484);
+        scrollPnlDatos.setBackground(new Color(38, 178, 170));
         
-        BtnHover cambiaColorbtnCheck = new BtnHover(btnCheck);
-        btnCheck.addMouseListener(cambiaColorbtnCheck);
-                
-        btnCheck.setBounds(24, 59, 125, 74);
-        pnl_Opciones.add(btnCheck);
-        
-        Icon iconoBorrar = new ImageIcon("src\\images\\borrar.png");
-        JButton btnBorrar = new JButton(iconoBorrar);
-        
-        // Cambiamos color del boton al pasar ratón encima
-        
-        BtnHover cambiaColorbtnBorrar = new BtnHover(btnBorrar);
-        btnBorrar.addMouseListener(cambiaColorbtnBorrar);
-        
-        // btnBorrar.setBackground(Color.WHITE);
-        btnBorrar.setBounds(24, 196, 125, 74);
-        pnl_Opciones.add(btnBorrar);
-        
-        JLabel lblGuardar = new JLabel("Guardar");
-        lblGuardar.setFont(new Font("Arial", Font.BOLD, 14));
-        lblGuardar.setBounds(53, 144, 73, 14);
-        pnl_Opciones.add(lblGuardar);
-        
-        JLabel lblBorrar = new JLabel("Borrar");
-        lblBorrar.setFont(new Font("Arial", Font.BOLD, 14));
-        lblBorrar.setBounds(53, 281, 50, 14);
-        pnl_Opciones.add(lblBorrar);
+        tblDatos = new JTable();
+        tblDatos.setModel(modelo);
+        tblDatos.getColumn("Curp").setPreferredWidth(120);
+        tblDatos.getColumn("Año Nac").setPreferredWidth(40);
+        add(scrollPnlDatos);
+        scrollPnlDatos.setColumnHeaderView(tblDatos);
     }
+    
+    public void validacion() {
+        String resultado = Metodos_SQL.busquedaAprox(txtCurp.getText());
+        
+        if(resultado.equals("Hay resultados")) {
+            try {
+                 
+                con = Conexion_DB.conexion();
+                String consultaAprox = "SELECT * from datos_usr WHERE curp LIKE ?";
+                
+                PreparedStatement ps = con.prepareStatement(consultaAprox);
+                ps.setString(1, txtCurp.getText());
+                rs = ps.executeQuery();
+                while(rs.next()) {
+                    Object[] registro = new Object[8];
+                    for(int i = 0; i < 8; i++) {
+                        registro[i] = rs.getObject(i+1);
+                    }
+                    modelo.addRow(registro);
+                }
+                
+                lblSearchResult.setText("Registros encontrados");
+                lblSearchIcon.setText("");
+                lblSearchIcon.setIcon(check);
+                con.close();
+                
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }finally {
+                try {
+                    con.close();
+                } catch (SQLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+        }else {
+            lblSearchResult.setText("No hay coincidencias");
+            lblSearchIcon.setIcon(tache);
+        }
+    }
+   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

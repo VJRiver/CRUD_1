@@ -203,6 +203,34 @@ public class Metodos_SQL {
             }
         }
     }
+    
+    public static String busquedaAprox(String curp) {
+        String buscaAprox = "SELECT * from datos_usr where curp LIKE ?";
+        String resultado = null;
+        try {
+            con = Conexion_DB.conexion();
+            PreparedStatement pst = con.prepareStatement(buscaAprox);
+            pst.setString(1, curp);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()) {
+                resultado = "Hay resultados";
+            }else {
+                resultado = "No hay resultados";
+            }
+            
+            con.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return resultado;
+    }
 
 }
 
